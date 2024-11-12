@@ -70,10 +70,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h2>Project Gallery</h2>
                 <div class="gallery-grid">
                     ${project.gallery.map(img => `
-                        <img src="${img}" alt="Project Screenshot">
+                        <div class="gallery-item">
+                            <img src="${img}" alt="Project Screenshot" loading="lazy">
+                        </div>
                     `).join('')}
                 </div>
             </div>
         </div>
     `;
+
+    // Add lightbox functionality for gallery images
+    const galleryItems = document.querySelectorAll('.gallery-item img');
+    galleryItems.forEach(img => {
+        img.addEventListener('click', () => {
+            const lightbox = document.createElement('div');
+            lightbox.className = 'lightbox';
+            lightbox.innerHTML = `
+                <div class="lightbox-content">
+                    <img src="${img.src}" alt="Project Screenshot">
+                    <button class="lightbox-close">&times;</button>
+                </div>
+            `;
+            document.body.appendChild(lightbox);
+
+            lightbox.querySelector('.lightbox-close').addEventListener('click', () => {
+                lightbox.remove();
+            });
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.remove();
+                }
+            });
+        });
+    });
 }); 
