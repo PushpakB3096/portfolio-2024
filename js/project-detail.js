@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get project ID from URL parameter
+    // Get project ID and referrer from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const projectId = urlParams.get('id');
+    const referrer = urlParams.get('from') || 'home'; // Default to home if not specified
 
     // Get project data
     const project = projectsData[projectId];
@@ -11,6 +12,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Get back button text and URL based on referrer
+    const getBackLink = () => {
+        switch(referrer) {
+            case 'projects':
+                return {
+                    text: 'Back to All Projects',
+                    url: 'projects.html'
+                };
+            default:
+                return {
+                    text: 'Back to Home',
+                    url: 'index.html#projects'
+                };
+        }
+    };
+
+    const backLink = getBackLink();
+
     // Update page title
     document.title = `${project.title} - Portfolio`;
 
@@ -18,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectContent = document.getElementById('project-content');
     projectContent.innerHTML = `
         <div class="back-button">
-            <a href="index.html#projects" class="back-link">
+            <a href="${backLink.url}" class="back-link">
                 <i class="fas fa-arrow-left"></i>
-                Back to Projects
+                ${backLink.text}
             </a>
         </div>
 
@@ -61,9 +80,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <div class="project-features">
                 <h2>Key Features</h2>
-                <ul>
-                    ${project.features.map(feature => `<li>${feature}</li>`).join('')}
-                </ul>
+                <div class="features-grid">
+                    ${project.features.map((feature, index) => `
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                ${getFeatureIcon(index)}
+                            </div>
+                            <div class="feature-content">
+                                <h3>${feature.title}</h3>
+                                <p>${feature.description}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
 
             <div class="project-gallery">
@@ -104,4 +133,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
-}); 
+});
+
+// Helper function to get feature icons
+function getFeatureIcon(index) {
+    const icons = [
+        'fa-chart-line',
+        'fa-mobile-screen',
+        'fa-gauge-high',
+        'fa-shield-halved',
+        'fa-arrows-rotate',
+        'fa-cloud'
+    ];
+    return `<i class="fas ${icons[index % icons.length]}"></i>`;
+} 

@@ -8,10 +8,22 @@ const projectsData = {
         description: "Real-time analytics dashboard with interactive data visualization.",
         overview: "A comprehensive analytics dashboard that provides real-time insights and interactive data visualization tools. Built with modern web technologies to ensure high performance and scalability.",
         features: [
-            "Real-time data tracking",
-            "Interactive charts and graphs",
-            "Customizable dashboards",
-            "Advanced filtering options"
+            {
+                title: "Real-time Analytics",
+                description: "Track user behavior and system performance in real-time with interactive dashboards and instant updates."
+            },
+            {
+                title: "Custom Reports",
+                description: "Generate detailed reports with customizable metrics and visualization options to suit your needs."
+            },
+            {
+                title: "Performance Metrics",
+                description: "Monitor key performance indicators with advanced filtering and comparison tools."
+            },
+            {
+                title: "Data Security",
+                description: "Enterprise-grade security measures to protect sensitive data and ensure compliance."
+            }
         ],
         technologies: ["React", "Node.js", "D3.js", "MongoDB", "WebSocket"],
         demoLink: "https://demo.example.com",
