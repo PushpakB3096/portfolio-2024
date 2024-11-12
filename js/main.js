@@ -121,33 +121,43 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(statsSection);
 
 // Project filtering
-const filterButtons = document.querySelectorAll('.filter-btn');
-const projectCards = document.querySelectorAll('.project-card');
+document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
 
-filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
-        button.classList.add('active');
-        
-        const filterValue = button.getAttribute('data-filter');
-        
-        projectCards.forEach(card => {
-            // Reset animation
-            card.style.animation = 'none';
-            card.offsetHeight; // Trigger reflow
-            card.style.animation = null;
-            
-            if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                card.style.display = 'block';
-                // Add animation with delay based on index
-                card.style.animationDelay = `${Array.from(projectCards).indexOf(card) * 0.1}s`;
-            } else {
-                card.style.display = 'none';
-            }
+    if (filterButtons.length > 0 && projectCards.length > 0) {
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                projectCards.forEach(card => {
+                    // Reset animation
+                    card.style.animation = 'none';
+                    card.offsetHeight; // Trigger reflow
+                    card.style.animation = null;
+                    
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'grid';
+                        card.style.animationDelay = `${Array.from(projectCards).indexOf(card) * 0.1}s`;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Trigger layout recalculation
+                const projectGrid = document.querySelector('.project-grid');
+                if (projectGrid) {
+                    projectGrid.style.display = 'none';
+                    projectGrid.offsetHeight;
+                }
+            });
         });
-    });
+    }
 });
 
 // Project card hover effect
